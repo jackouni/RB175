@@ -3,9 +3,13 @@ require 'socket'
 def parse_request(request_line)
   method, path_and_params, version = request_line.split(' ')
   path, params = path_and_params.split('?')
-  queries = params.split('&').map { |param| param.split('=') }
+  if params
+    queries = params.split('&').map { |param| param.split('=') }.to_h
+  else
+    queries = {}
+  end
 
-  [method, path, queries.to_h, version]
+  [method, path, queries, version]
 end
 
 server = TCPServer.new('localhost', 3003)
@@ -20,9 +24,6 @@ loop do
   method, path, queries, version = parse_request(request_line)
   
   puts parse_request(request_line)
-
-  rolls = queries["rolls"].to_i
-  sides = queries["sides"].to_i
   
   client.puts "HTTP/1.1 200 OK"
   client.puts "Content-Type: text/html"
@@ -33,13 +34,17 @@ loop do
   client.puts path
   client.puts queries
   client.puts "</pre>"
-  client.puts "<h1>ROLLS:</h1>"
-  client.puts "<p>", rolls, "</p>"
-  client.puts "<h1>NUMBERS ROLLED:</h1>"
-  rolls.times do |roll|
-    client.puts "<p>", "Roll ##{roll+1} ==> #{rand(sides) + 1}", "</p>"
-    client.puts
-  end
+
+  client.puts "<h1>Counter</h1>"
+
+  number = queries["number"].to_i
+  increment = queries["increment"]
+
+  client.puts "<p>The current number is: #{number}.</p>"
+
+  client.puts "<a href='?number=#{number + 1}'>Increment</a>"
+  client.puts "<a href='?number=#{number - 1}'>Decrement</a>"
+
   client.puts "</body>"
   client.puts "</html>"
   client.close
