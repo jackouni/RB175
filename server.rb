@@ -1,3 +1,4 @@
+require 'rackup'
 require 'socket' 
 
 def parse_request(request_line)
@@ -20,8 +21,11 @@ loop do
   request_line = client.gets
   next if !request_line || request_line =~ /favicon/
   puts request_line
+  
+  next unless request_line
 
   method, path, queries, version = parse_request(request_line)
+
   
   puts parse_request(request_line)
   
