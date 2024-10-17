@@ -1,4 +1,6 @@
-# Lesson 2, Assignment 3
+# Lesson 2: Handling Requests Manually 
+
+## Lesson 2, Assignment 3
 
 Before watching the entirety of the walkthrough portion I want to see if I can guess what the code initially displayed for the mock-server represents.
 
@@ -58,3 +60,23 @@ Sends the request line back to the client.
 
 #### `client.close`
 Closes/terminates the TCP connection between `client` and `server`
+
+
+
+## Lesson 2 Summary:
+
+- HTTP is just text formatted in a certain way, that is parsed and interpreted.
+- HTTP is stateless
+- *State* can be simulated through the use of query parameters. These query parameters can contain values that we can use on the server side to dynmically generate content. By using `<a>` tags in the response body's HTML, we can apply logic to the hyper-link's URL structure on the server side to dynamically generate URL's for a client to use.
+- When crafting our own low-level servers, using conditional statements can help us avoid errors that may be encountered from client HTTP requests. **Example**: client not including query parameters when our server expects query parameters
+- Generally, we are not doing stuff at this low of a level. Usually devs are using tools built to abstract a lot of these lower-level implementations to interpret, parse and construct HTML to send in a body.
+
+---
+
+---
+
+
+# Lesson 3: Working With Sinatra
+
+## What is Rack (Ruby)?
+
